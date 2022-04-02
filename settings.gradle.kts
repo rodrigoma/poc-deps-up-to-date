@@ -8,7 +8,7 @@ dependencyResolutionManagement {
             alias("kotlin-reflect").to("org.jetbrains.kotlin:kotlin-reflect:1.3.40")
             alias("kotlin-plugin").to("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41")
             alias("spring-boot-starter").to("org.springframework.boot:spring-boot-starter:2.6.6")
-            alias("spring-boot-starter-test").to("org.springframework.boot:spring-boot-starter-test:2.6.2")
+            alias("spring-boot-starter-test").to("org.springframework.boot:spring-boot-starter-test:2.6.6")
         }
     }
 }
