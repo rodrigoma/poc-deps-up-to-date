@@ -1,0 +1,94 @@
+name: Create Release
+
+on:
+    pull_request:
+        types:
+            - closed
+
+jobs:
+    create-release:
+        if: github.event.pull_request.merged == true
+        name: Create Release and increase version
+        runs-on: "ubuntu-latest"
+        steps:
+            - name: Checkout project
+              uses: actions/checkout@v3
+
+            - name: Get actual release tag
+              run: echo ACTUAL_RELEASE_TAG="`grep -Po '(?<=^version=).*' gradle.properties`" >> $GITHUB_ENV
+
+            - name: Create release
+              uses: "actions/github-script@v6"
+              with:
+                github-token: "${{ secrets.GITHUB_TOKEN }}"
+                script: |
+                    try {
+                      await github.rest.repos.createRelease({
+                        draft: false,
+                        generate_release_notes: true,
+                        name: process.env.ACTUAL_RELEASE_TAG,
+                        owner: context.repo.owner,
+                        prerelease: false,
+                        repo: context.repo.repo,
+                        tag_name: process.env.ACTUAL_RELEASE_TAG,
+                      });
+                    } catch (error) {
+                      core.setFailed(error.message);
+                    }
+
+            - name: Update major in gradle.properties
+              if: contains(github.event.pull_request.labels.*.name, 'major')
+              run: |
+                  cp gradle.properties gradle.properties.major
+                  perl -pe 's/=(\d+)./"=".($1+1)."."/eg' gradle.properties.major > gradle.properties.minor
+                  perl -pe 's/\.(\d+)\./".".(0)."."/eg' gradle.properties.minor > gradle.properties.patch
+                  perl -pe 's/(\d+$)/0/eg' gradle.properties.patch > gradle.properties
+                  rm -rf gradle.properties.*
+
+            - name: Update minor in gradle.properties
+              if: contains(github.event.pull_request.labels.*.name, 'minor')
+              run: |
+                  cp gradle.properties gradle.properties.minor
+                  perl -pe 's/\.(\d+)\./".".($1+1)."."/eg' gradle.properties.minor > gradle.properties.patch
+                  perl -pe 's/(\d+$)/0/eg' gradle.properties.patch > gradle.properties
+                  rm -rf gradle.properties.*
+
+            - name: Update patch in gradle.properties
+              if: (!contains(github.event.pull_request.labels.*.name, 'major') && !contains(github.event.pull_request.labels.*.name, 'minor'))
+              run: |
+                  cp gradle.properties gradle.properties.patch
+                  perl -pe 's/(\d+$)/$1+1/eg' gradle.properties.patch > gradle.properties
+                  rm -rf gradle.properties.*
+
+            - name: Get new release tag
+              run: echo NEW_RELEASE_TAG="`grep -Po '(?<=^version=).*' gradle.properties`" >> $GITHUB_ENV
+
+            - name: Commit gradle.properties update
+              run: |
+                  git config --global user.name "${{github.actor}}"
+                  git config --global user.email '${{github.actor}}@users.noreply.github.com'
+                  git commit -am "Atualizando versao"
+                  git push origin master
+        outputs:
+            ACTUAL_RELEASE_TAG: ${{ env.ACTUAL_RELEASE_TAG }}
+
+    publish-release:
+        needs: create-release
+        name: Create image and push to JFrog
+        runs-on: "ubuntu-latest"
+        env:
+          ACTUAL_TAG: ${{ needs.create-release.outputs.ACTUAL_RELEASE_TAG }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        steps:
+            - name: Description
+              run: echo "Creating image and push to JFrong release/tag [${{ env.ACTUAL_TAG }}]"
+
+            - name: Checkout project
+              uses: actions/checkout@v3
+              with:
+                ref: ${{ env.ACTUAL_TAG }}
+
+            - name: Envia notificacao para o canal no Teams
+              run: |
+                  sed 's/_APPLICATION_NAME_/${{ env.REPO_NAME }}/g;s/_RELEASE_TAG_/${{ env.ACTUAL_TAG }}/g;s/_PR_TITLE_/${{ github.event.pull_request.title }}/g;s/_PR_NUMBER_/${{ github.event.pull_request.number }}/g;s/_USER_SERVICE_LOGIN_/${{ secrets.USER_SERVICE_LOGIN }}/g;s/_USER_SERVICE_JENKINS_TOKEN_/${{ secrets.USER_SERVICE_JENKINS_TOKEN }}/g' .github/workflows/files/action-release-teams.json > curl_data.json
+                  curl -H 'Content-Type: application/json' https://subscription-qa.free.beeceptor.com -d @curl_data.json
