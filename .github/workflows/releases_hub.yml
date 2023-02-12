@@ -30,4 +30,12 @@ jobs:
           distribution: 'adopt'
           java-version: 11
 
-      - run: ./gradlew upgradeDependencies -PpullRequestsMax=${{ github.event.inputs.pullRequestsMax || '5' }} -Pincludes=${{ github.event.inputs.includes || '' }} -PgitUserEmail=${{ secrets.GITUSEREMAIL }} -PgitUserName=${{ secrets.GITUSERNAME }} -PgitHubWriteToken=${{ secrets.GITHUBWRITETOKEN }} -PgitHubRepository= ${{ github.repository }}
+      - name: Run Upgrade Dependencies
+        run: |
+          ./gradlew upgradeDependencies \
+            -PpullRequestsMax=${{ github.event.inputs.pullRequestsMax || '5' }} \
+            -PgitUserEmail=${{ secrets.GITUSEREMAIL }} \
+            -PgitUserName=${{ secrets.GITUSERNAME }} \
+            -PgitHubWriteToken=${{ secrets.GITHUBWRITETOKEN }} \
+            -PgitHubRepository='${{ github.repository }}' \
+            -Pincludes=${{ github.event.inputs.includes || '' }}
