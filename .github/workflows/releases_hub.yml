@@ -31,7 +31,7 @@ jobs:
 
       - run: ./gradlew upgradeDependencies -PgitHubRepositoryName=${GITHUB_REPOSITORY#*/} -PpullRequestsMax=${{ github.event.inputs.pullRequestsMax || '5' }} -Pincludes=${{ github.event.inputs.includes || '' }} --stacktrace --info
         env:
-          gitHubWriteToken: ${{ secrets.gitHubWriteToken }}
-          gitUserEmail: ${{ secrets.gitUserEmail }}
-          gitUserName: ${{ secrets.gitUserName }}
+          gitHubWriteToken: ${{ secrets.GITHUBWRITETOKEN }}
+          gitUserEmail: ${{ secrets.GITUSEREMAIL }}
+          gitUserName: ${{ secrets.GITUSERNAME }}
           gitHubRepositoryOwner: ${{ github.repository_owner }}
