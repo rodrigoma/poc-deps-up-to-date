@@ -15,7 +15,7 @@ kotlin-jpa = "org.jetbrains.kotlin.plugin.jpa:1.7.0"
 [libraries]
 build-gradle-plantuml-plugin = "com.cosminpolifronie.gradle:gradle-plantuml-plugin:1.6.0"
 build-plantuml = "net.sourceforge.plantuml:plantuml:1.2022.5"
-build-sonarqube-gradle-plugin = "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3"
+build-sonarqube-gradle-plugin = "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.5.0.2730"
 
 jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2"
 
