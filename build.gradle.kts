@@ -1,10 +1,28 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+// Links
+// https://blog.dipien.com/how-to-automate-your-dependencies-upgrades-with-github-actions-bedf1337ca3f
+// https://blog.jdriven.com/2022/11/gradle-goodness-defining-plugin-versions-using-version-catalog/
+// https://zone84.tech/programming/manage-your-dependencies-with-gradle-version-catalogs/
+
+// necessario para suprir um warn de erro, corrigido na proxima versão 8.1 do gradle
+// https://github.com/gradle/gradle/issues/22797
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-	id("org.springframework.boot") version "2.6.1"
-	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-	kotlin("jvm") version "1.6.0"
-	kotlin("plugin.spring") version "1.6.0"
+	alias(libs.plugins.springframework.boot)
+	alias(libs.plugins.spring.dependency.management)
+	alias(libs.plugins.springframework.cloud.contract)
+	alias(libs.plugins.plantuml)
+	alias(libs.plugins.avro)
+	alias(libs.plugins.git.properties)
+	alias(libs.plugins.allure)
+	alias(libs.plugins.allure.adapter)
+	alias(libs.plugins.releaseshub)
+	id("application")
+
+	alias(libs.plugins.kotlin.lang)
+	alias(libs.plugins.kotlin.spring)
+	alias(libs.plugins.kotlin.jpa)
 }
 
 group = "com.rodrigoma"
@@ -20,17 +38,55 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath(libs.kotlin.plugin)
-		classpath(libs.releasesHubGradlePlugin)
+		classpath(libs.build.sonarqube.gradle.plugin)
+		classpath(libs.build.gradle.plantuml.plugin) { exclude("net.sourceforge.plantuml", "plantuml") }
+		classpath(libs.build.plantuml)
 	}
 }
 apply(plugin = "com.dipien.releaseshub.gradle.plugin")
 
 dependencies {
-	implementation(libs.spring.boot.starter)
-	implementation(libs.kotlin.reflect)
-	implementation(libs.kotlin)
-	testImplementation(libs.spring.boot.starter.test)
+	// Kotlin
+	implementation(libs.jackson.module.kotlin)
+
+	// Spring Boot
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-hateoas")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
+	implementation("org.springframework.kafka:spring-kafka")
+
+	// AWS
+	implementation(libs.spring.cloud.starter.aws.messaging)
+	implementation(libs.aws.java.sdk.secretsmanager)
+	runtimeOnly(libs.aws.secretsmanager.jdbc)
+	runtimeOnly(libs.aws.java.sdk.bom)
+	runtimeOnly(libs.aws.java.sdk.core)
+
+	// Database
+	implementation(libs.liquibase.core)
+	implementation(libs.hibernate.types)
+
+	// Redis
+	// versao mais alta que funcionou, demais davam erro de timeout
+	implementation(libs.jedis)
+
+	// New Relic
+	implementation(libs.newrelic.api)
+
+	// Tests
+	testImplementation(libs.test.h2.database)
+	testImplementation(libs.test.kotlin.extensions)
+	testImplementation(libs.test.mockito.kotlin)
+	testImplementation(libs.test.awaitility)
+	testImplementation(libs.test.spring.cloud.starter.contract.stub.runner)
+	testImplementation(libs.test.converter)
+}
+
+dependencyManagement {
+	imports {
+		mavenBom("org.springframework.cloud:spring-cloud-dependencies:2021.0.1")
+	}
 }
 
 tasks.withType<KotlinCompile> {
