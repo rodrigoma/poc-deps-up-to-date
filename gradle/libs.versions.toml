@@ -23,7 +23,7 @@ spring-cloud-starter-aws-messaging = "io.awspring.cloud:spring-cloud-starter-aws
 aws-java-sdk-secretsmanager = "com.amazonaws:aws-java-sdk-secretsmanager:1.12.347"
 aws-secretsmanager-jdbc = "com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:1.0.10"
 aws-java-sdk-bom = "com.amazonaws:aws-java-sdk-bom:1.12.405"
-aws-java-sdk-core = "com.amazonaws:aws-java-sdk-core:1.12.347"
+aws-java-sdk-core = "com.amazonaws:aws-java-sdk-core:1.12.405"
 
 liquibase-core = "org.liquibase:liquibase-core:4.17.2"
 hibernate-types = "com.vladmihalcea:hibernate-types-52:2.20.0"
