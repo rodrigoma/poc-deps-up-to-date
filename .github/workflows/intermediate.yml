@@ -27,18 +27,40 @@ jobs:
       - name: Branch Actual name
         run: git rev-parse --abbrev-ref HEAD
         
+      - name: Prepare first branch
+        run: |
+            git checkout origin/branch-main
+            git pull orgin origin/branch-main
+        
+      - name: Branch Actual name
+        run: git rev-parse --abbrev-ref HEAD
+
+      - name: Prepare second branch
+        run: |
+            git checkout origin/branch-test
+            git pull orgin origin/branch-test
+        
+      - name: Branch Actual name
+        run: git rev-parse --abbrev-ref HEAD
+
+      - name: Back to master base
+        run: git checkout master
+        
+      - name: Branch Actual name
+        run: git rev-parse --abbrev-ref HEAD
+
       - name: Create QA branch
         run: git checkout -b QA
         
       - name: Branch Actual name
         run: git rev-parse --abbrev-ref HEAD
-        
+
       - name: Merge first branch
         run: git merge origin/branch-main --no-edit --allow-unrelated-histories
         
       - name: Branch Actual name
         run: git rev-parse --abbrev-ref HEAD
-        
+
       - name: Merge second branch
         run: git merge origin/branch-test --no-edit --allow-unrelated-histories
         
