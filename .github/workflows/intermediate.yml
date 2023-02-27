@@ -34,7 +34,7 @@ jobs:
         
       - name: Prepare first branch
         run: |
-            git switch origin/branch-main --no-guess
+            git checkout -b branch-main origin/branch-main
         
       - name: Branch Actual name
         run: |
@@ -43,7 +43,7 @@ jobs:
 
       - name: Prepare second branch
         run: |
-            git switch origin/branch-test --no-guess
+            git checkout -b branch-main origin/branch-test
         
       - name: Branch Actual name
         run: |
@@ -67,7 +67,7 @@ jobs:
             git branch -v -a
 
       - name: Merge first branch
-        run: git merge origin/branch-main --no-edit --allow-unrelated-histories
+        run: git merge branch-main --no-edit --allow-unrelated-histories
         
       - name: Branch Actual name
         run: |
@@ -75,7 +75,7 @@ jobs:
             git branch -v -a
 
       - name: Merge second branch
-        run: git merge origin/branch-test --no-edit --allow-unrelated-histories
+        run: git merge branch-test --no-edit --allow-unrelated-histories
         
       - name: Branch Actual name
         run: |
