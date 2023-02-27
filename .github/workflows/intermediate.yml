@@ -11,6 +11,7 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v3
         with:
+          ref: 'master'
           token: "${{ secrets.GITHUBWRITETOKEN }}"
 
       - name: Config git
