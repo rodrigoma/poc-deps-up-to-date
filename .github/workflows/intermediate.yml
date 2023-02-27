@@ -11,6 +11,11 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v3
 
+      - name: Config git
+        run: |
+            git config --global user.name "${{github.actor}}"
+            git config --global user.email '${{github.actor}}@users.noreply.github.com'
+
       - name: Branch Actual name
         run: git rev-parse --abbrev-ref HEAD
         
