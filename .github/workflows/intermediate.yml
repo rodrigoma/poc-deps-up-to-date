@@ -25,9 +25,6 @@ jobs:
       - name: Branch Actual name
         run: git rev-parse --abbrev-ref HEAD
         
-      - name: Remove previous QA branch
-        run: git branch -D QA
-        
       - name: Create QA branch
         run: git checkout -b QA
         
