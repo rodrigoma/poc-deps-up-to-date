@@ -19,13 +19,17 @@ jobs:
             git config --global user.email "${{ secrets.GITUSEREMAIL }}"
 
       - name: Branch Actual name
-        run: git rev-parse --abbrev-ref HEAD
+        run: |
+            git rev-parse --abbrev-ref HEAD
+            git branch -v -a
         
       - name: Fetch All
         run: git fetch --all
 
       - name: Branch Actual name
-        run: git rev-parse --abbrev-ref HEAD
+        run: |
+            git rev-parse --abbrev-ref HEAD
+            git branch -v -a
         
       - name: Prepare first branch
         run: |
@@ -33,7 +37,9 @@ jobs:
             git pull orgin branch-main
         
       - name: Branch Actual name
-        run: git rev-parse --abbrev-ref HEAD
+        run: |
+            git rev-parse --abbrev-ref HEAD
+            git branch -v -a
 
       - name: Prepare second branch
         run: |
@@ -41,34 +47,46 @@ jobs:
             git pull orgin branch-test
         
       - name: Branch Actual name
-        run: git rev-parse --abbrev-ref HEAD
+        run: |
+            git rev-parse --abbrev-ref HEAD
+            git branch -v -a
 
       - name: Back to master base
         run: git checkout master
         
       - name: Branch Actual name
-        run: git rev-parse --abbrev-ref HEAD
+        run: |
+            git rev-parse --abbrev-ref HEAD
+            git branch -v -a
 
       - name: Create QA branch
         run: git checkout -b QA
         
       - name: Branch Actual name
-        run: git rev-parse --abbrev-ref HEAD
+        run: |
+            git rev-parse --abbrev-ref HEAD
+            git branch -v -a
 
       - name: Merge first branch
         run: git merge origin/branch-main --no-edit --allow-unrelated-histories
         
       - name: Branch Actual name
-        run: git rev-parse --abbrev-ref HEAD
+        run: |
+            git rev-parse --abbrev-ref HEAD
+            git branch -v -a
 
       - name: Merge second branch
         run: git merge origin/branch-test --no-edit --allow-unrelated-histories
         
       - name: Branch Actual name
-        run: git rev-parse --abbrev-ref HEAD
+        run: |
+            git rev-parse --abbrev-ref HEAD
+            git branch -v -a
         
       - name: Pull QA Branch
         run: git push origin QA
         
       - name: Branch Actual name
-        run: git rev-parse --abbrev-ref HEAD
+        run: |
+            git rev-parse --abbrev-ref HEAD
+            git branch -v -a
