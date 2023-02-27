@@ -13,6 +13,12 @@ jobs:
 
       - name: Branch Actual name
         run: git rev-parse --abbrev-ref HEAD
+        
+      - name: Fetch All
+        run: git fetch --all
+
+      - name: Branch Actual name
+        run: git rev-parse --abbrev-ref HEAD
 
       - name: Create QA branch
         run: git checkout -b QA
