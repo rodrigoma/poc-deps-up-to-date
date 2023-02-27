@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
+        with:
+          token: "${{ secrets.GITHUBWRITETOKEN }}"
 
       - name: Config git
         run: |
@@ -44,7 +46,7 @@ jobs:
         run: git rev-parse --abbrev-ref HEAD
         
       - name: Pull QA Branch
-        run: git pull origin QA
+        run: git push origin QA
         
       - name: Branch Actual name
         run: git rev-parse --abbrev-ref HEAD
