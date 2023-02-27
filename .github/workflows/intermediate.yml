@@ -33,7 +33,7 @@ jobs:
         
       - name: Prepare first branch
         run: |
-            git switch branch-main --no-guess
+            git switch origin/branch-main --no-guess
         
       - name: Branch Actual name
         run: |
@@ -42,7 +42,7 @@ jobs:
 
       - name: Prepare second branch
         run: |
-            git switch branch-test --no-guess
+            git switch origin/branch-test --no-guess
         
       - name: Branch Actual name
         run: |
