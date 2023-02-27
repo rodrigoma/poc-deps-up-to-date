@@ -43,7 +43,7 @@ jobs:
 
       - name: Prepare second branch
         run: |
-            git checkout -b branch-main origin/branch-test
+            git checkout -b branch-test origin/branch-test
         
       - name: Branch Actual name
         run: |
