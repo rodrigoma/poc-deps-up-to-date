@@ -29,16 +29,16 @@ jobs:
         
       - name: Prepare first branch
         run: |
-            git checkout origin/branch-main
-            git pull orgin origin/branch-main
+            git checkout branch-main
+            git pull orgin branch-main
         
       - name: Branch Actual name
         run: git rev-parse --abbrev-ref HEAD
 
       - name: Prepare second branch
         run: |
-            git checkout origin/branch-test
-            git pull orgin origin/branch-test
+            git checkout branch-test
+            git pull orgin branch-test
         
       - name: Branch Actual name
         run: git rev-parse --abbrev-ref HEAD
