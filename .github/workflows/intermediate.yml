@@ -27,13 +27,13 @@ jobs:
         run: git rev-parse --abbrev-ref HEAD
         
       - name: Merge first branch
-        run: git merge origin/branch-main
+        run: git merge origin/branch-main --no-edit
         
       - name: Branch Actual name
         run: git rev-parse --abbrev-ref HEAD
         
       - name: Merge second branch
-        run: git merge origin/branch-test
+        run: git merge origin/branch-test --no-edit
         
       - name: Branch Actual name
         run: git rev-parse --abbrev-ref HEAD
