@@ -33,8 +33,7 @@ jobs:
         
       - name: Prepare first branch
         run: |
-            git checkout branch-main
-            git pull orgin branch-main
+            git switch orgin/branch-main
         
       - name: Branch Actual name
         run: |
@@ -43,8 +42,7 @@ jobs:
 
       - name: Prepare second branch
         run: |
-            git checkout branch-test
-            git pull orgin branch-test
+            git switch orgin/branch-test
         
       - name: Branch Actual name
         run: |
