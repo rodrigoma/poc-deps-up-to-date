@@ -6,6 +6,4 @@ import org.springframework.boot.runApplication
 @SpringBootApplication
 class PocDepsUpToDateApplication
 
-fun main(args: Array<String>) {
-	runApplication<PocDepsUpToDateApplication>(*args)
-}
+fun main(args: Array<String>) {	runApplication<PocDepsUpToDateApplication>(*args) }
