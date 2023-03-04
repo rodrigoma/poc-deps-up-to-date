@@ -21,12 +21,12 @@ jobs:
             cd poc-deps-up-to-date
             pwd
             ls -loarth
-            git pull orgin master
+            git pull origin master
             git checkout branch-main
-            git pull orgin branch-main
+            git pull origin branch-main
             git checkout branch-test
-            git pull orgin branch-test
+            git pull origin branch-test
             git checkout -b QA
             git merge branch-main --no-edit --allow-unrelated-histories
             git merge branch-test --no-edit --allow-unrelated-histories
-            git push orgin QA
+            git push origin QA
