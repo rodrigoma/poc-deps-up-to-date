@@ -10,82 +10,20 @@ jobs:
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
-        with:
-          ref: 'master'
-          token: "${{ secrets.GITHUBWRITETOKEN }}"
-
-      - name: Config git
-        run: |
-            git config --global user.name "${{ secrets.GITUSERNAME }}"
-            git config --global user.email "${{ secrets.GITUSEREMAIL }}"
-
-      - name: Branch Actual name
-        run: |
-            git rev-parse --abbrev-ref HEAD
-            git branch -v -a
-        
-      - name: Fetch All
-        run: git fetch --all
-
-      - name: Branch Actual name
-        run: |
-            git rev-parse --abbrev-ref HEAD
-            git branch -v -a
-        
-      - name: Prepare first branch
-        run: |
-            git checkout -b branch-main origin/branch-main
-        
-      - name: Branch Actual name
-        run: |
-            git rev-parse --abbrev-ref HEAD
-            git branch -v -a
-
-      - name: Prepare second branch
-        run: |
-            git checkout -b branch-test origin/branch-test
-        
-      - name: Branch Actual name
-        run: |
-            git rev-parse --abbrev-ref HEAD
-            git branch -v -a
-
-      - name: Back to master base
-        run: git checkout master
-        
-      - name: Branch Actual name
-        run: |
-            git rev-parse --abbrev-ref HEAD
-            git branch -v -a
-
-      - name: Create QA branch
-        run: git checkout -b QA
-        
-      - name: Branch Actual name
-        run: |
-            git rev-parse --abbrev-ref HEAD
-            git branch -v -a
-
-      - name: Merge first branch
-        run: git merge branch-main --no-edit --allow-unrelated-histories
-        
-      - name: Branch Actual name
-        run: |
-            git rev-parse --abbrev-ref HEAD
-            git branch -v -a
-
-      - name: Merge second branch
-        run: git merge branch-test --no-edit --allow-unrelated-histories
-        
-      - name: Branch Actual name
-        run: |
-            git rev-parse --abbrev-ref HEAD
-            git branch -v -a
-        
-      - name: Pull QA Branch
-        run: git push origin QA
-        
-      - name: Branch Actual name
-        run: |
-            git rev-parse --abbrev-ref HEAD
-            git branch -v -a
+      - run: |
+            git config --global user.email "${{ secrets.GITUSERNAME }}"
+            git config --global user.name "${{ secrets.GITUSEREMAIL }}"
+            git config --global pull.ff only
+            git clone "https://${{ secrets.GITUSERNAME }}:${{ secrets.GITHUBWRITETOKEN }}@github.com/${{ secrets.GITUSERNAME }}/poc-deps-up-to-date.git"
+            git fetch
+            cd poc-deps-up-to-date
+            git checkout master
+            git pull orgin master
+            git checkout branch-main
+            git pull orgin branch-main
+            git checkout branch-test
+            git pull orgin branch-test
+            git checkout -b QA
+            git merge branch-main --no-edit --allow-unrelated-histories
+            git merge branch-test --no-edit --allow-unrelated-histories
+            git push orgin QA
