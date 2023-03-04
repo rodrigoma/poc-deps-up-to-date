@@ -14,10 +14,13 @@ jobs:
             git config --global user.email "${{ secrets.GITUSERNAME }}"
             git config --global user.name "${{ secrets.GITUSEREMAIL }}"
             git config --global pull.ff only
+            pwd
+            ll -loarth
             git clone "https://${{ secrets.GITUSERNAME }}:${{ secrets.GITHUBWRITETOKEN }}@github.com/${{ secrets.GITUSERNAME }}/poc-deps-up-to-date.git"
             git fetch
             cd poc-deps-up-to-date
-            git checkout master
+            pwd
+            ll -loarth
             git pull orgin master
             git checkout branch-main
             git pull orgin branch-main
