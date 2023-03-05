@@ -1,4 +1,4 @@
-name: "Create Branch QA"
+name: "Create Intermediary Branch for QA"
 
 on:
   workflow_dispatch:
@@ -14,8 +14,8 @@ on:
         required: true
 
 jobs:
-  create-branch-qa:
-    name: "Job Create Branch QA"
+  create-intermediary-branch:
+    name: "Job Create Intermediary Branch for QA"
     runs-on: ubuntu-latest
     env:
         branches_to_combine: ${{ github.event.inputs.branches_to_combine }}
