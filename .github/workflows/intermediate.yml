@@ -58,3 +58,7 @@ jobs:
       - name: Push "${{ github.event.inputs.branch_intermediary }}"
         run: |
             git push origin ${{ github.event.inputs.branch_intermediary }}
+
+      - name: On fail
+        if: ${{ failure() }}
+        run: echo "Infelizmente tem caflitos para resolver e não posso ajudar na criação da branch intermediária"
