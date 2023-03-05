@@ -61,8 +61,8 @@ jobs:
 
       - name: On Fail
         if: ${{ failure() }}
-        run: echo "### Infelizmente tem caflitos para resolver e não posso ajudar na criação da branch intermediária :boom:" >> $GITHUB_STEP_SUMMARY
+        run: echo "# Infelizmente tem caflitos para resolver e não posso ajudar na criação da branch intermediária :boom:" >> $GITHUB_STEP_SUMMARY
 
       - name: On Success
         if: ${{ success() }}
-        run: echo "### Branch ${{ github.event.inputs.branch_intermediary }} criada! :rocket:" >> $GITHUB_STEP_SUMMARY
+        run: echo "# Branch ${{ github.event.inputs.branch_intermediary }} criada! :rocket:" >> $GITHUB_STEP_SUMMARY
