@@ -59,6 +59,10 @@ jobs:
         run: |
             git push origin ${{ github.event.inputs.branch_intermediary }}
 
-      - name: On fail
+      - name: On Fail
         if: ${{ failure() }}
-        run: echo "Infelizmente tem caflitos para resolver e não posso ajudar na criação da branch intermediária"
+        run: echo "#### Infelizmente tem caflitos para resolver e não posso ajudar na criação da branch intermediária" >> $GITHUB_STEP_SUMMARY
+
+      - name: On Success
+        if: ${{ success() }}
+        run: echo "#### Branch ${{ github.event.inputs.branch_intermediary }} criada! :rocket:" >> $GITHUB_STEP_SUMMARY
