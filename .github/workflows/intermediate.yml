@@ -10,7 +10,7 @@ on:
         required: true
       branches_to_combine:
         type: string
-        description: "Informe as branchs separadas por ';' Ex: branch1;branch2;branch3"
+        description: "Informe as branches separadas por ';' Ex: branch1;branch2;branch3"
         required: true
 
 jobs:
@@ -45,8 +45,7 @@ jobs:
             done
 
       - name: Creating "${{ github.event.inputs.branch_intermediary }}" branch
-        run: |
-            git checkout -b ${{ github.event.inputs.branch_intermediary }}
+        run: git checkout -b ${{ github.event.inputs.branch_intermediary }}
 
       - name: Merge "${{ env.branches_to_combine }}" into "${{ github.event.inputs.branch_intermediary }}" branch
         id: merge
@@ -58,8 +57,7 @@ jobs:
 
       - name: Push "${{ github.event.inputs.branch_intermediary }}"
         id: push
-        run: |
-            git push origin ${{ github.event.inputs.branch_intermediary }}
+        run: git push origin ${{ github.event.inputs.branch_intermediary }}
 
       - name: On Merge Fail
         if: ${{ failure() && steps.merge.outcome == 'failure' }}
