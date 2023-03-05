@@ -36,7 +36,7 @@ jobs:
             git fetch
             git pull origin master
 
-      - name: Checkout "${{ branches_to_combine }}" branches
+      - name: Checkout "${{ env.branches_to_combine }}" branches
         run: |
             IFS=';' read -ra ADDR <<< "$branches_to_combine"
             for i in "${ADDR[@]}"; do
@@ -48,7 +48,7 @@ jobs:
         run: |
             git checkout -b ${{ github.event.inputs.branch_intermediary }}
 
-      - name: Merge "${{ branches_to_combine }}" into "${{ github.event.inputs.branch_intermediary }}" branch
+      - name: Merge "${{ env.branches_to_combine }}" into "${{ github.event.inputs.branch_intermediary }}" branch
         run: |
             IFS=';' read -ra ADDR <<< "$branches_to_combine"
             for i in "${ADDR[@]}"; do
