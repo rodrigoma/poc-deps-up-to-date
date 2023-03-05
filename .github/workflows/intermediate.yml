@@ -1,45 +1,72 @@
-name: "Create Branch QA"
+name: "Create Intermediary Branch for QA"
 
 on:
   workflow_dispatch:
     inputs:
-      branch_intermediaria:
+      branch_intermediary:
         type: string
-        description: "Informe o nome da branch intermediaria"
+        description: "Informe o nome da branch intermediária"
         default: "qa"
         required: true
-      branches:
+      branches_to_combine:
         type: string
-        description: "Informe as branchs separadas por virgula Ex: branch1,branch2,branch3"
+        description: "Informe as branches separadas por ';' Ex: branch1;branch2;branch3"
         required: true
 
 jobs:
-  create-branch-qa:
-    name: "Job Create Branch QA"
+  create-intermediary-branch:
+    name: "Job Create Intermediary Branch for QA"
     runs-on: ubuntu-latest
+    env:
+        branches_to_combine: ${{ github.event.inputs.branches_to_combine }}
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
         with:
           ref: 'master'
           token: "${{ secrets.GITHUBWRITETOKEN }}"
-      - name: Executa comandos git
-        env:
-          brnchs: ${{ github.event.inputs.branches }}
+      - name: Config git
         run: |
             git config --global user.email "${{ secrets.GITUSERNAME }}"
             git config --global user.name "${{ secrets.GITUSEREMAIL }}"
             git config --global pull.ff only
+
+      - name: Fetch all and pull master
+        run: |
             git fetch
             git pull origin master
-            IFS=';' read -ra ADDR <<< "$brnchs"
+
+      - name: Checkout "${{ env.branches_to_combine }}" branches
+        run: |
+            IFS=';' read -ra ADDR <<< "$branches_to_combine"
             for i in "${ADDR[@]}"; do
               git checkout $i
               git pull origin $i
             done
-            git checkout -b ${{ github.event.inputs.branch_intermediaria }}
-            IFS=';' read -ra ADDR <<< "$brnchs"
+
+      - name: Creating "${{ github.event.inputs.branch_intermediary }}" branch
+        run: git checkout -b ${{ github.event.inputs.branch_intermediary }}
+
+      - name: Merge "${{ env.branches_to_combine }}" into "${{ github.event.inputs.branch_intermediary }}" branch
+        id: merge
+        run: |
+            IFS=';' read -ra ADDR <<< "$branches_to_combine"
             for i in "${ADDR[@]}"; do
               git merge $i --no-edit --allow-unrelated-histories
             done
-            git push origin ${{ github.event.inputs.branch_intermediaria }}
+
+      - name: Push "${{ github.event.inputs.branch_intermediary }}"
+        id: push
+        run: git push origin ${{ github.event.inputs.branch_intermediary }}
+
+      - name: On Merge Fail
+        if: ${{ failure() && steps.merge.outcome == 'failure' }}
+        run: echo "# Infelizmente tem caflitos para resolver e não posso ajudar na criação da branch intermediária :boom:" >> $GITHUB_STEP_SUMMARY
+
+      - name: On Push Fail
+        if: ${{ failure() && steps.push.outcome == 'failure' }}
+        run: echo "# Branch ${{ github.event.inputs.branch_intermediary }} já existe remotamente, exclua antes de executar a action novamente :warning:" >> $GITHUB_STEP_SUMMARY
+
+      - name: On Success
+        if: ${{ success() }}
+        run: echo "# Branch ${{ github.event.inputs.branch_intermediary }} criada! :rocket:" >> $GITHUB_STEP_SUMMARY
