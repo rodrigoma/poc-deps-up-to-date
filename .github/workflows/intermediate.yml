@@ -62,11 +62,11 @@ jobs:
             git push origin ${{ github.event.inputs.branch_intermediary }}
 
       - name: On Merge Fail
-        if: ${{ failure() && steps.merge.outcome != 'success' }}
+        if: ${{ failure() && steps.merge.outcome == 'failure' }}
         run: echo "# Infelizmente tem caflitos para resolver e não posso ajudar na criação da branch intermediária :boom:" >> $GITHUB_STEP_SUMMARY
 
       - name: On Push Fail
-        if: ${{ failure() && steps.push.outcome != 'success' }}
+        if: ${{ failure() && steps.push.outcome == 'failure' }}
         run: echo "# Branch ${{ github.event.inputs.branch_intermediary }} já existe remotamente, exclua antes de executar a action novamente :warning:" >> $GITHUB_STEP_SUMMARY
 
       - name: On Success
