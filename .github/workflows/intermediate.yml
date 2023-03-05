@@ -49,6 +49,7 @@ jobs:
             git checkout -b ${{ github.event.inputs.branch_intermediary }}
 
       - name: Merge "${{ env.branches_to_combine }}" into "${{ github.event.inputs.branch_intermediary }}" branch
+        id: merge
         run: |
             IFS=';' read -ra ADDR <<< "$branches_to_combine"
             for i in "${ADDR[@]}"; do
@@ -56,12 +57,17 @@ jobs:
             done
 
       - name: Push "${{ github.event.inputs.branch_intermediary }}"
+        id: push
         run: |
             git push origin ${{ github.event.inputs.branch_intermediary }}
 
-      - name: On Fail
-        if: ${{ failure() }}
+      - name: On Merge Fail
+        if: ${{ failure() && steps.merge.outcome != 'success' }}
         run: echo "# Infelizmente tem caflitos para resolver e não posso ajudar na criação da branch intermediária :boom:" >> $GITHUB_STEP_SUMMARY
+
+      - name: On Push Fail
+        if: ${{ failure() && steps.push.outcome != 'success' }}
+        run: echo "# Branch ${{ github.event.inputs.branch_intermediary }} já existe remotamente, exclua antes de executar a action novamente :warning:" >> $GITHUB_STEP_SUMMARY
 
       - name: On Success
         if: ${{ success() }}
