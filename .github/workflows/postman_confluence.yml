@@ -40,6 +40,5 @@ jobs:
         run: |
             for entry in docs/postman/*.json
             do
-              CURRENT_FILE=$(readlink -f $entry)
-              echo -e "Full path: $CURRENT_FILE"
+              echo -e "Full path: $(readlink -f $entry)"
             done
