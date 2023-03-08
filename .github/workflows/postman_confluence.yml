@@ -14,13 +14,36 @@ jobs:
     name: "Postman Confluence"
     runs-on: "ubuntu-latest"
     steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+    
       - name: Checkout master
         uses: actions/checkout@v3
         with:
           ref: master
           token: ${{ secrets.GITHUBWRITETOKEN }}
 
-      - name: Get files full path
+      - name: Curiosidade
         run: |
-            echo -e "Envi.json path: $(readlink -f docs/environment.json)"
-            echo -e "Post.json path: $(readlink -f docs/postman.json)"
+            echo -e "-------------------------"
+            ls -lorth /home/runner/work/
+            echo -e "-------------------------"
+            ls -lorth /home/runner/work/poc-deps-up-to-date/
+            echo -e "-------------------------"
+            ls -lorth /home/runner/work/poc-deps-up-to-date/poc-deps-up-to-date/
+            
+      - name: Attaching Postman files in Confluence
+        run: |
+            for entry in docs/postman/*.json
+            do
+              CURRENT_FILE=$(readlink -f $entry)
+              echo -e "Full path: $CURRENT_FILE"
+              curl --location --request PUT 'https://rodrigoma.atlassian.net/wiki/rest/api/content/74482943487/child/attachment' \
+                   --header 'X-Atlassian-Token: nocheck' \
+                   --header 'Authorization: Basic SEU_TOKEN_AQUI' \
+                   --form 'file=@"$CURRENT_FILE"' \
+                   --form 'comment="alteração"; type=text/plain; charset=utf-8' \
+                   --form 'minorEdit="true"'
+            done
