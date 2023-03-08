@@ -14,5 +14,13 @@ jobs:
     name: "Postman Confluence"
     runs-on: "ubuntu-latest"
     steps:
-      - name: Print
-        run: echo "Teste"
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: master
+          token: ${{ secrets.GITHUBWRITETOKEN }}
+
+      - name: Get files full path
+        run: |
+            echo -e "Envi.json path: $(readlink -f docs/environment.json)"
+            echo -e "Post.json path: $(readlink -f docs/postman.json)"
