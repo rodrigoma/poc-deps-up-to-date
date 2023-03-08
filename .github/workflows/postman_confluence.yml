@@ -46,7 +46,7 @@ jobs:
                  --header 'X-Atlassian-Token: nocheck' \
                  --header 'Authorization: Basic SEU_TOKEN_AQUI' \
                  --form "file=@$CURRENT_FILE" \
-                 --form 'comment="Update environment.json"; type=text/plain; charset=utf-8' \
+                 --form 'comment="${{ env.COMMENT_MSG }}"; type=text/plain; charset=utf-8' \
                  --form 'minorEdit="true"'
               sleep 5
             done
