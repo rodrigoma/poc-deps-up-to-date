@@ -42,6 +42,4 @@ jobs:
             do
               CURRENT_FILE=$(readlink -f $entry)
               echo -e "Full path: $CURRENT_FILE"
-              curl --location --request PUT 'https://webhook.site/57f634a6-75ef-448e-a467-d1c4b5152813' --header 'X-Atlassian-Token: nocheck' --header 'Authorization: Basic SEU_TOKEN_AQUI' --form "file=@$CURRENT_FILE" --form 'comment="${{ env.COMMENT_MSG }}"; type=text/plain; charset=utf-8' --form 'minorEdit="true"'
-              sleep 5
             done
