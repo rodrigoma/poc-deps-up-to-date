@@ -8,7 +8,7 @@
     {
       "activityTitle": "_MESSAGE_",
       "activitySubtitle": "Iniciado por: __USERNAME__",
-      "activityImage": "_IMAGE_TESTE_"
+      "activityImage": "_IMAGE_TESTE_WEBHOOK_"
     },
     {
       "title": "### Detalhes do Build #_BUILD_NUMBER_",
