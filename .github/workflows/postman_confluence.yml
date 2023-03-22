@@ -1,0 +1,52 @@
+name: "Postman Confluence"
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'docs/environment.json'
+      - 'docs/postman.json'
+  workflow_dispatch:
+
+jobs:
+  postman-confluence:
+    name: "Postman Confluence"
+    runs-on: "ubuntu-latest"
+    env:
+      COMMENT_MSG: ${{ github.event.head_commit.message || 'Execução manual da action'}}
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+    
+      - name: Checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: master
+          token: ${{ secrets.GITHUBWRITETOKEN }}
+
+      - name: Curiosidade
+        run: |
+            echo -e "-------------------------"
+            ls -lorth /home/runner/work/
+            echo -e "-------------------------"
+            ls -lorth /home/runner/work/poc-deps-up-to-date/
+            echo -e "-------------------------"
+            ls -lorth /home/runner/work/poc-deps-up-to-date/poc-deps-up-to-date/
+        # olhar o path do arquvo json    
+      - name: Attaching Postman files in Confluence
+        run: |
+            for entry in docs/*.json
+            do
+              CURRENT_FILE=$(readlink -f $entry)
+              echo -e "Full path: $CURRENT_FILE"
+              curl --location --request PUT 'https://webhook.site/57f634a6-75ef-448e-a467-d1c4b5152813' \
+                 --header 'X-Atlassian-Token: nocheck' \
+                 --header 'Authorization: Basic SEU_TOKEN_AQUI' \
+                 --form "file=@$CURRENT_FILE" \
+                 --form 'comment="${{ env.COMMENT_MSG }}"; type=text/plain; charset=utf-8' \
+                 --form 'minorEdit="true"'
+              sleep 5
+            done
