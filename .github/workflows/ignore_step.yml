@@ -1,0 +1,21 @@
+name: "Ignora step que deu falha"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-ignore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      - name: Run ls
+        run: ls
+      
+      - name: Run lll (error)
+        continue-on-error: true
+        run: lll
+
+      - name: Run pwd
+        run: pwd
