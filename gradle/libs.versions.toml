@@ -28,7 +28,7 @@ aws-java-sdk-core = "com.amazonaws:aws-java-sdk-core:1.12.347"
 liquibase-core = "org.liquibase:liquibase-core:4.17.2"
 hibernate-types = "com.vladmihalcea:hibernate-types-52:2.20.0"
 
-jedis = "redis.clients:jedis:4.3.1"
+jedis = "redis.clients:jedis:4.3.2"
 
 newrelic-api = "com.newrelic.agent.java:newrelic-api:7.11.0"
 
