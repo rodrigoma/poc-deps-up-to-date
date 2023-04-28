@@ -21,7 +21,7 @@ jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.14
 
 spring-cloud-starter-aws-messaging = "io.awspring.cloud:spring-cloud-starter-aws-messaging:2.4.2"
 aws-java-sdk-secretsmanager = "com.amazonaws:aws-java-sdk-secretsmanager:1.12.347"
-aws-secretsmanager-jdbc = "com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:1.0.11"
+aws-secretsmanager-jdbc = "com.amazonaws.secretsmanager:aws-secretsmanager-jdbc:1.0.12"
 aws-java-sdk-bom = "com.amazonaws:aws-java-sdk-bom:1.12.347"
 aws-java-sdk-core = "com.amazonaws:aws-java-sdk-core:1.12.347"
 
