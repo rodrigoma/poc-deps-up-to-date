@@ -1,0 +1,31 @@
+{
+  "@type": "MessageCard",
+  "@context": "https://schema.org/extensions",
+  "themeColor": "_COLOR_",
+  "summary": "Pipeline do app _APPLICATION_NAME_",
+  "title": "_APPLICATION_NAME_",
+  "sections": [
+    {
+      "activityTitle": "_MESSAGE_",
+      "activitySubtitle": "Iniciado por: __USERNAME__",
+      "activityImage": "_IMAGE_TESTE_WEBHOOK_WEBHOOK_"
+    },
+    {
+      "title": "### Detalhes do Build #_BUILD_NUMBER_",
+      "facts": [
+        {
+          "name": "Environment:",
+          "value": "_ENVIRONMENT_"
+        },
+        {
+          "name": "Branch/Tag:",
+          "value": "_GITHUB_REF_NAME_"
+        },
+        {
+          "name": "Build Type:",
+          "value": "_BUILD_TYPE_"
+        }
+      ]
+    }
+  ]
+}
