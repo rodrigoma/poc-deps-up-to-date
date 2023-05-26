@@ -30,7 +30,7 @@ hibernate-types = "com.vladmihalcea:hibernate-types-52:2.20.0"
 
 jedis = "redis.clients:jedis:3.1.0"
 
-newrelic-api = "com.newrelic.agent.java:newrelic-api:8.1.0"
+newrelic-api = "com.newrelic.agent.java:newrelic-api:8.2.0"
 
 test-h2-database = "com.h2database:h2:2.1.214"
 test-kotlin-extensions = "io.rest-assured:kotlin-extensions:5.3.0"
