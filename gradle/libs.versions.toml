@@ -17,7 +17,7 @@ build-gradle-plantuml-plugin = "com.cosminpolifronie.gradle:gradle-plantuml-plug
 build-plantuml = "net.sourceforge.plantuml:plantuml:1.2022.5"
 build-sonarqube-gradle-plugin = "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.3"
 
-jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2"
+jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2"
 
 spring-cloud-starter-aws-messaging = "io.awspring.cloud:spring-cloud-starter-aws-messaging:2.4.2"
 aws-java-sdk-secretsmanager = "com.amazonaws:aws-java-sdk-secretsmanager:1.12.347"
